@@ -1,0 +1,49 @@
+name: devopsReact App
+
+on:
+  push:
+    branches:
+      - main 
+  
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'  
+
+     
+      - name: Install dependencies
+        run: |
+          npm install
+
+     
+      - name: Build React app
+        run: |
+          npm run build
+
+      
+      - name: Deploy to EC2
+        env:
+          PRIVATE_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
+          HOST: ${{ secrets.EC2_HOST }}
+          USER: ${{ secrets.EC2_USER }}
+          PASSWORD: ${{ secrets.EC2_PASSWORD }}
+        run: |
+          # Install SSH and SCP tools on the runner
+          sudo apt-get install sshpass
+
+          # Deploy the build to the EC2 instance
+          sshpass -p ${{ secrets.EC2_PASSWORD }} scp -r ./build/* $USER@${{ secrets.EC2_HOST }}:/var/www/my-react-app/
+
+          # Restart Nginx to serve the new build
+          ssh $USER@${{ secrets.EC2_HOST }} "sudo systemctl restart nginx"
