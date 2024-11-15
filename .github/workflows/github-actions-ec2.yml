@@ -1,0 +1,63 @@
+name: Push-to-EC2
+
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy to EC2 on master branch push
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout the files    
+        uses: actions/checkout@v2
+
+      - name: Install dependencies and build React app           
+        run: |
+          npm install
+          npm run build
+
+      - name: Deploy build files to ec2
+        uses: easingthemes/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+          REMOTE_HOST: ${{ secrets.HOST_DNS }}
+          REMOTE_USER: ${{ secrets.USERNAME }}
+          TARGET: /var/www/html   
+
+      - name: configure apache for react app    
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST_DNS }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            sudo apt-get -y update
+            sudo apt-get install -y apache2
+            sudo systemctl start apache2
+            sudo systemctl enable apache2
+
+            sudo chmod -R 755 /var/www/html
+
+            # Create Apache configuration for React app (if not already configured)
+            echo '<VirtualHost *:80>
+            DocumentRoot /var/www/html
+            <Directory "/var/www/html">
+                AllowOverride All
+            </Directory>
+            </VirtualHost>' | sudo tee /etc/apache2/sites-available/000-default.conf
+
+            # Enable .htaccess for React (if using client-side routing)
+            echo 'Options -MultiViews
+            RewriteEngine On
+            RewriteCond %{REQUEST_FILENAME} !-f
+            RewriteCond %{REQUEST_FILENAME} !-d
+            RewriteRule ^ index.html [L]' | sudo tee /var/www/html/.htaccess
+
+            # Restart Apache to apply changes
+            sudo systemctl restart apache2
+
+
