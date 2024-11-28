@@ -4,6 +4,7 @@ phases:
     commands:
       - echo Installing dependencies...
       - npm install
+      - cd ./node_modules/.bin && ls
   build:
     commands:
       - echo Building the React app...
