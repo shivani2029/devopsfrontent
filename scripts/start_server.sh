@@ -2,7 +2,7 @@
 sudo systemctl start nginx
 sudo tee /etc/nginx/sites-available/react-app <<EOL
 server {
-    listen 80;
+    listen 4000;
     server_name _;
     root /var/www/react-app;
     index index.html;
