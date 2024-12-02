@@ -13,7 +13,7 @@ server {
 }
 EOL
 sudo ln -sf /etc/nginx/sites-available/react-app /etc/nginx/sites-enabled/
-cd /var/www/react-app || exit
+sudo cp -r /var/www/react-app/build/* /var/www/html/
 sudo npm run build
 sudo systemctl restart nginx
 
