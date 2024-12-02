@@ -27,7 +27,7 @@ sudo npm install
 sudo npm run build
 
 
-sudo cp -r /var/www/react-app/build/* /var/www/html/
+# sudo cp -r /var/www/react-app/build/* /var/www/html/
 
 
 sudo systemctl restart nginx
