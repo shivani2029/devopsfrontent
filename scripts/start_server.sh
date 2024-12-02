@@ -13,4 +13,9 @@ server {
 }
 EOL
 sudo ln -sf /etc/nginx/sites-available/react-app /etc/nginx/sites-enabled/
+cd /var/www/react-app || exit
+sudo npm run build
 sudo systemctl restart nginx
+
+
+
