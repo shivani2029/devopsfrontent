@@ -28,7 +28,7 @@ sudo npm run build
 sudo PORT=4000 npm start &
 
 
-# sudo cp -r /var/www/react-app/build/* /var/www/html/
+sudo cp -r /var/www/react-app/build/* /var/www/react-app
 
 
 # sudo systemctl restart nginx
