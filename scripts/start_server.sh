@@ -23,8 +23,8 @@
 cd /var/www/react-app || exit
 
 
-sudo npm install
-sudo npm run build
+ npm install
+ npm run build
 sudo PORT=4000 npm start &
 
 
