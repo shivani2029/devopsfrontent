@@ -20,13 +20,17 @@
 # sudo ln -sf /etc/nginx/sites-available/react-app /etc/nginx/sites-enabled/
 
 
-cd /var/www/react-app || exit
+# cd /var/www/react-app || exit
 
- set -e
- npm install
- npm run build
- PORT=4000 npm start &
+#  set -e
+#  npm install
+#  npm run build
+#  PORT=4000 npm start &
 
+#!/bin/bash
+cd /home/ubuntu/react-app
+npm run build
+npm start
 
 
 
