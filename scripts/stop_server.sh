@@ -1,4 +1,3 @@
 #!/bin/bash
-# sudo systemctl stop nginx
-pkill -f "npm start" || echo "No npm start process found on port 4000"
-
+# Stop the React app by killing the process running on port 4000
+pkill -f "npm start" || echo "No npm start process found"
