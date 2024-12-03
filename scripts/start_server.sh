@@ -1,34 +1,19 @@
 #!/bin/bash
 
-# sudo systemctl start nginx
+set -e  # Exit immediately if a command exits with a non-zero status
 
-
-# sudo tee /etc/nginx/sites-available/react-app <<EOL
-# server {
-#     listen 4000;
-#     server_name _;
-#     root /var/www/react-app/build;  # Pointing to the build directory
-#     index index.html;
-
-#     location / {
-#         try_files \$uri /index.html;
-#     }
-# }
-# EOL
-
-
-# sudo ln -sf /etc/nginx/sites-available/react-app /etc/nginx/sites-enabled/
-
-
+# Navigate to the application directory
 cd /var/www/react-app || exit
 
+# Install dependencies
+npm install
 
- npm install
- npm run build
-sudo PORT=4000 npm start &
+# Build the React app for production
+npm run build
 
+# Start the React app on port 4000
+# Runs as a background process
+PORT=4000 npm start &
 
-
-
-
-# sudo systemctl restart nginx
+# Notify that the app has started
+echo "React app is running on port 4000. Access it via http://<your-ec2-public-ip>:4000"
