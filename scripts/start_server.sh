@@ -26,7 +26,7 @@ cd /var/www/react-app || exit
  npm install
  npm run build
  PORT=4000 npm start &
-chmod +x scripts/start_server.sh
+
 
 
 
