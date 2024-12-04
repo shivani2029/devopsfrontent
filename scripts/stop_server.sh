@@ -1,2 +1,2 @@
 #!/bin/bash
-pkill -f "serve -s build"
+sudo pkill -f "serve -s build"

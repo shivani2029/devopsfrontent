@@ -1,6 +1,6 @@
 #!/bin/bash
-cd /home/ubuntu/react-app
-npm run build
+# cd /home/ubuntu/react-app
+sudo npm run build
 serve -s build -l 5000 &
 
 
